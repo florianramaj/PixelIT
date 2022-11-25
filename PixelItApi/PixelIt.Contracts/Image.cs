@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace PixelIt.Contracts
 {
-    internal class Image
+    public class Image
     {
+        public string Value => "Test";
     }
 }

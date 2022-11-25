@@ -11,11 +11,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include=".gitignore" />
+    <Content Include=".gitignore" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.31.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PixelIt.Contracts\PixelIt.Contracts.csproj" />
   </ItemGroup>
 
 </Project>
