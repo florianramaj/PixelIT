@@ -12,4 +12,8 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  handleFileInput(target: any){
+    console.log(target.files[0]);
+  }
+
 }
