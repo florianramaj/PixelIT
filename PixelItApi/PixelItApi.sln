@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PixelItApi", "PixelItApi\Pi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelIt.Contracts", "PixelIt.Contracts\PixelIt.Contracts.csproj", "{8ECB5FD1-060E-457F-A469-0D40116EB019}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelItService", "PixelItService\PixelItService.csproj", "{1D787349-0302-4EC4-8533-BF99EAF66F22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{8ECB5FD1-060E-457F-A469-0D40116EB019}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8ECB5FD1-060E-457F-A469-0D40116EB019}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8ECB5FD1-060E-457F-A469-0D40116EB019}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D787349-0302-4EC4-8533-BF99EAF66F22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D787349-0302-4EC4-8533-BF99EAF66F22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D787349-0302-4EC4-8533-BF99EAF66F22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D787349-0302-4EC4-8533-BF99EAF66F22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
