@@ -1,9 +1,13 @@
-<div class="container">
-    <div class="row">
-
+<div class="row" style="margin-top: 20px;">
+    <div class="col-5">
+        <div class="input-group">
+            <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04"
+                (change)="handleFileInput($event.target)" aria-label="Upload">
+        </div>
     </div>
-    <div class="input-group">
-        <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" (change)="handleFileInput($event.target)" aria-label="Upload">
-        <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Button</button>
-      </div>
 </div>
+<div class="row">
+    <img test style="width: 100px" [src]="fileUpload" />
+</div>
+
+
