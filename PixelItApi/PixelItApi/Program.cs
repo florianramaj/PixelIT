@@ -1,3 +1,5 @@
+using PixelItApi.Services;
+
 namespace PixelItApi
 {
     public class Program
@@ -12,6 +14,8 @@ namespace PixelItApi
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddSingleton<IDatabaseService, CosmosService>();
+            builder.Services.AddSingleton<IImageService, ImageService>();
 
             var app = builder.Build();
 
@@ -21,12 +25,16 @@ namespace PixelItApi
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
-
+            
             app.MapControllers();
 
             app.Run();

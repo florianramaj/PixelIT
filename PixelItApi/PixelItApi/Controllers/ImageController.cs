@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PixelIt.Contracts;
+using PixelItApi.Services;
 
 namespace PixelItApi.Controllers
 {
@@ -6,23 +8,55 @@ namespace PixelItApi.Controllers
     [Route("[controller]")]
     public class ImageController : Controller
     {
-        public ImageController()
-        {
+        private readonly IImageService service;
 
+        public ImageController(IImageService imageService)
+        {
+            this.service = imageService;
         }
 
         [HttpGet()]
-        public async Task<IActionResult> GetEditors()
+        public async Task<IActionResult> GetImages()
         {
             try
             {
-                var response = await this.service.GetEditorsAsync();
+                var response = await this.service.GetImages();
                 return this.Ok(response);
             }
             catch (Exception ex)
             {
                 return this.Problem(ex.ToString());
             }
+        }
+        
+        [HttpPost()]
+        public async Task<IActionResult> SaveImage([FromBody] Image image)
+        {
+            try
+            {
+                await this.service.SaveImage(image);
+                return this.NoContent();
+            }
+            catch (Exception ex)
+            {
+                return this.Problem(ex.ToString());
+            }
+           
+        }
+        
+        [HttpPost("/PixilateImage")]
+        public async Task<IActionResult> PixilateImage([FromBody] Image image)
+        {
+            try
+            {
+                await this.service.WriteToPixelateImageQueue(image);
+                return this.NoContent();
+            }
+            catch (Exception ex)
+            {
+                return this.Problem(ex.ToString());
+            }
+           
         }
     }
 }
