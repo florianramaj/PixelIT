@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PixelIt.Contracts
+﻿namespace PixelIt.Contracts
 {
     public class Image
     {
-        public string Value => "Test";
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string StringBytes { get; set; }
     }
 }

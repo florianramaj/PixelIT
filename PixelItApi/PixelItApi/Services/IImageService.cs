@@ -4,7 +4,8 @@ namespace PixelItApi.Services;
 
 public interface IImageService
 {
+    Task WriteToPixelateImageQueue(Image image);
     Task SaveImage(Image image);
     
-    Task<Image> GetImages();
+    Task<List<Image>> GetImages();
 }

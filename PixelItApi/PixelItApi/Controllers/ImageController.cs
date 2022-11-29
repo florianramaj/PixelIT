@@ -20,8 +20,8 @@ namespace PixelItApi.Controllers
         {
             try
             {
-                //var response = await this.service.GetImages();
-                return this.Ok(new Image());
+                var response = await this.service.GetImages();
+                return this.Ok(response);
             }
             catch (Exception ex)
             {
@@ -34,7 +34,22 @@ namespace PixelItApi.Controllers
         {
             try
             {
-                //await this.service.SaveImage(image);
+                await this.service.SaveImage(image);
+                return this.NoContent();
+            }
+            catch (Exception ex)
+            {
+                return this.Problem(ex.ToString());
+            }
+           
+        }
+        
+        [HttpPost("/PixilateImage")]
+        public async Task<IActionResult> PixilateImage([FromBody] Image image)
+        {
+            try
+            {
+                await this.service.WriteToPixelateImageQueue(image);
                 return this.NoContent();
             }
             catch (Exception ex)

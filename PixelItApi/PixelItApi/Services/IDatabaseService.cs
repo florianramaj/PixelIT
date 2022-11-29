@@ -6,6 +6,6 @@ namespace PixelItApi.Services
     {
         Task SaveImage(Image image);
 
-        Task<Image> GetImages();
+        Task<List<Image>> GetImages();
     }
 }
