@@ -31,20 +31,30 @@ public class WatchdogService : IWatchdogService
 
     private async Task Worker()
     {
-        await using var outQueueClient = new ServiceBusClient(ConnectionString);
-
-        ServiceBusReceiver receiver = outQueueClient.CreateReceiver("pixelitout");
-        
-        do
+        try
         {
-            ServiceBusReceivedMessage receivedMessage = await receiver.ReceiveMessageAsync();
-            Console.WriteLine($"[InputQueue|{DateTime.Now}]");
+            await using var outQueueClient = new ServiceBusClient(ConnectionString);
 
-            var imagePart = receivedMessage.Body.ToObjectFromJson<ImagePart>();
+            ServiceBusReceiver receiver = outQueueClient.CreateReceiver("pixelitout");
+            Console.WriteLine($"[Listener started|{DateTime.Now}]");
+            do
+            {
+                ServiceBusReceivedMessage receivedMessage = await receiver.ReceiveMessageAsync();
+                Console.WriteLine($"[InputQueue|{DateTime.Now}]");
 
-            this.hub.Clients.All.SendAsync("ImageData", imagePart);
-            receiver.CompleteMessageAsync(receivedMessage);
-            Console.WriteLine($"[OutputQueue|{DateTime.Now}]: {imagePart}");
-        } while (!receiver.IsClosed);
+                var imagePart = receivedMessage.Body.ToObjectFromJson<ImagePart>();
+
+                await this.hub.Clients.All.SendAsync("ImageData", imagePart);
+                receiver.CompleteMessageAsync(receivedMessage);
+                Console.WriteLine($"[OutputQueue|{DateTime.Now}]: {imagePart.ToString()}");
+            } while (!receiver.IsClosed);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            this.isRunning = false;
+            this.StartListening();
+        }
+        
     }
 }
