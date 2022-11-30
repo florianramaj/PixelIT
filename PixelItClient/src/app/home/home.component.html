@@ -5,6 +5,9 @@
                 (change)="handleFileInput($event.target)" aria-label="Upload">
         </div>
     </div>
+    <div class="col-3">
+        <button type="button" (click)="pixelit()" class="btn btn-primary">Pixel It!</button>
+    </div>
 </div>
 <div class="row">
     <img test style="width: 100px" [src]="fileUpload" />
