@@ -21,4 +21,14 @@ export class HttpHandlerService {
   {
       return this.http.post<any>(this.endPoint + "/PixilateImage", image, {headers: this.headers});
   }
+
+  public SaveImage(image: Image)
+  {
+    return this.http.post<any>(this.endPoint + "/Image", image, {headers: this.headers});
+  }
+
+  public GetImages()
+  {
+    return this.http.get<Image[]>(this.endPoint + "/Image");
+  }
 }

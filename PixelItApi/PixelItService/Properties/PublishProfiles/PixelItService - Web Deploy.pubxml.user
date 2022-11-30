@@ -5,5 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAIp+XTcx9xUGS8839iZ3q9AAAAAACAAAAAAAQZgAAAAEAACAAAAD6g67/jx2eNaeDXe97agCE0rcsH2UNSIWz2vqB2su2/QAAAAAOgAAAAAIAACAAAABAWmmnG0UiPpBNqbNiNPMGZTlpFvpKNkBsxZyBikTmc4AAAAAbBUNRqr1iJ+soKiAEs9Jbq/YNAjUV6hfpkCIC1bXocY3+YcxRb55+uCEjJMT6Bab8j4Jwxc0WGfYgJuFGUtsCpv1xj9zL2WS/02U+Os96XU6eklaymnAPVT9qNNd233Zs4x8uj+9MfsTXWo2icsKV89N0CDWoeQ4YeGGrCiREUEAAAAC97VJ9zqmMneLd6V0DN3nLnCGJthek0mP0vVpPnwn9PptuInp7NPD69iQC3BhHczy1pNVHf7wAjvJ6T2KL9rut</EncryptedPassword>
+    <History>True|2022-11-30T21:06:23.6728203Z;True|2022-11-30T21:43:22.2661648+01:00;</History>
+    <LastFailureDetails />
   </PropertyGroup>
 </Project>

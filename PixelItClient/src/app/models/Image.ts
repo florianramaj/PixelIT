@@ -5,6 +5,7 @@ export class Image {
     public id!: string;
     public name!: string;
     public stringBytes!: string;
+    public imageId!: string;
 
 }
 
