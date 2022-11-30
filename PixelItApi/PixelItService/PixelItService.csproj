@@ -16,4 +16,10 @@
       <ProjectReference Include="..\PixelIt.Contracts\PixelIt.Contracts.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Settings.job">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

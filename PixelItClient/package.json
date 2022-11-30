@@ -19,8 +19,10 @@
     "@angular/platform-browser-dynamic": "^14.2.0",
     "@angular/router": "^14.2.0",
     "@azure/storage-queue": "^12.11.0",
+    "@microsoft/signalr": "^7.0.0",
     "buffer": "^6.0.3",
     "dotenv": "^16.0.3",
+    "guid-typescript": "^1.0.9",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
