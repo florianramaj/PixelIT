@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.Text.Json;
-using Azure.Storage.Queues;
+using Azure.Messaging.ServiceBus;
 using PixelIt.Contracts;
 using Image = PixelIt.Contracts.Image;
 
@@ -9,22 +9,21 @@ namespace PixelItApi.Services;
 
 public class ImageService : IImageService
 {
-    private readonly QueueClient inQueueClient;
-    private readonly QueueClient outputQueueClient;
     private readonly IDatabaseService databaseService;
-    private const string ConnectionString = "DefaultEndpointsProtocol=https;AccountName=pixelit;AccountKey=pCfLoUpdc2ku/a1XDfOfT4j8RWZNfVQjqwK/iD2HP08cxQK7WP2twUcH1bhXY0XRIUPdNzDGkoiX+AStCAPTLQ==;EndpointSuffix=core.windows.net";
+    private const string ConnectionString = "Endpoint=sb://pixelit.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=2eJm7AvDsYDiXkEE3V8ADeZhnGJ41FRJCn2A4eG0nlM=";
     private const int imageParts = 4;
     public ImageService(IDatabaseService databaseService)
     {
         this.databaseService = databaseService;
-        this.inQueueClient = new QueueClient(ConnectionString, "pixelitqueue");
+        
     }
 
     public async Task WriteToPixelateImageQueue(Image image)
     {
         try
         {
-            await this.inQueueClient.CreateIfNotExistsAsync();
+            await using var inQueueClient = new ServiceBusClient(ConnectionString);
+            var sender = inQueueClient.CreateSender("pixelitin");
             var parts = new List<string>();
 
             List<System.Drawing.Image> splitImages = this.SplitImages(this.CreateImage(Convert.FromBase64String(image.StringBytes)), imageParts);
@@ -46,7 +45,7 @@ public class ImageService : IImageService
                     PartNumber = partNumber,
                     TotalPart = 3
                 });
-                await inQueueClient.SendMessageAsync(messageJson);
+                await sender.SendMessageAsync(new ServiceBusMessage(messageJson));
 
                 partNumber++;
             }
