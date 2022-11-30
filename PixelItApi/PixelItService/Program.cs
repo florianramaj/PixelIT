@@ -21,6 +21,7 @@ do
     
     var messageJson = JsonSerializer.Serialize(new ImagePart
     {
+        ImageId = newImagePart.ImageId,
         Identificator = newImagePart.Identificator,
         StringBytes = newImagePart.StringBytes,
         PartNumber = newImagePart.PartNumber,

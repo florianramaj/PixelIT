@@ -40,6 +40,7 @@ public class ImageService : IImageService
             
                 var messageJson = JsonSerializer.Serialize(new ImagePart
                 {
+                    ImageId = image.Id,
                     Identificator = identificator,
                     StringBytes = part,
                     PartNumber = partNumber,
