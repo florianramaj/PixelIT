@@ -33,11 +33,10 @@ public class ImageService : IImageService
                 parts.Add(Convert.ToBase64String(ImageToByteArray(imagePart)));
             }
             
-            var identificator = Guid.NewGuid();
             var partNumber = 1;
             foreach (var part in parts)
             {
-            
+                var identificator = Guid.NewGuid();
                 var messageJson = JsonSerializer.Serialize(new ImagePart
                 {
                     ImageId = image.Id,

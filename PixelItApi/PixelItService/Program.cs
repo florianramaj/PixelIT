@@ -15,20 +15,28 @@ ServiceBusReceiver receiver = inQueueClient.CreateReceiver("pixelitin");
 var sender = inQueueClient.CreateSender("pixelitout");
 do
 {
-    ServiceBusReceivedMessage receivedMessage = await receiver.ReceiveMessageAsync();
-    Console.WriteLine($"[InputQueue|{DateTime.Now}]");
-    var newImagePart = pixelCalculator.PixelateImagePart(receivedMessage.Body.ToObjectFromJson<ImagePart>());
-    
-    var messageJson = JsonSerializer.Serialize(new ImagePart
+    try
     {
-        ImageId = newImagePart.ImageId,
-        Identificator = newImagePart.Identificator,
-        StringBytes = newImagePart.StringBytes,
-        PartNumber = newImagePart.PartNumber,
-        TotalPart = newImagePart.TotalPart
-    });
+        ServiceBusReceivedMessage receivedMessage = await receiver.ReceiveMessageAsync();
+        Console.WriteLine($"[InputQueue|{DateTime.Now}]");
+        var newImagePart = pixelCalculator.PixelateImagePart(receivedMessage.Body.ToObjectFromJson<ImagePart>());
     
-    await sender.SendMessageAsync(new ServiceBusMessage(messageJson));
-    receiver.CompleteMessageAsync(receivedMessage);
-    Console.WriteLine($"[OutputQueue|{DateTime.Now}]: {messageJson}");
-} while (!receiver.IsClosed);
+        var messageJson = JsonSerializer.Serialize(new ImagePart
+        {
+            ImageId = newImagePart.ImageId,
+            Identificator = newImagePart.Identificator,
+            StringBytes = newImagePart.StringBytes,
+            PartNumber = newImagePart.PartNumber,
+            TotalPart = newImagePart.TotalPart
+        });
+    
+        await sender.SendMessageAsync(new ServiceBusMessage(messageJson));
+        receiver.CompleteMessageAsync(receivedMessage);
+        Console.WriteLine($"[OutputQueue|{DateTime.Now}]: {messageJson}");
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+    }
+
+} while (true);
