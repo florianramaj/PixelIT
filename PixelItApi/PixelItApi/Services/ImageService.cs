@@ -13,7 +13,7 @@ public class ImageService : IImageService
     private readonly QueueClient outputQueueClient;
     private readonly IDatabaseService databaseService;
     private const string ConnectionString = "DefaultEndpointsProtocol=https;AccountName=pixelit;AccountKey=pCfLoUpdc2ku/a1XDfOfT4j8RWZNfVQjqwK/iD2HP08cxQK7WP2twUcH1bhXY0XRIUPdNzDGkoiX+AStCAPTLQ==;EndpointSuffix=core.windows.net";
-    private const int imageParts = 1000;
+    private const int imageParts = 4;
     public ImageService(IDatabaseService databaseService)
     {
         this.databaseService = databaseService;
@@ -101,26 +101,20 @@ public class ImageService : IImageService
 
     private List<System.Drawing.Image> SplitImages(System.Drawing.Image image, int partCounts)
     {
-        // Graphics g = Graphics.FromImage(image);
-        // Pen pen = new Pen(Color.Black,3);
         List<System.Drawing.Image> list = new List<System.Drawing.Image>();
-        // for (int i = 0; i < partCounts; i++)
-        // {
-        //     var r = new Rectangle(0, i*(image.Height / partCounts), image.Width, image.Height / partCounts);
-        // g.DrawRectangle(pen,r );
-        // list.Add(cropImage(image, r));
-        // }
         
         for( int i = 0; i < 1; i++){
-            for( int j = 0; j < partCounts; j++){
-                var index = i*1+j;
-                list.Add(new Bitmap(image.Width,image.Height));
-                var graphics = Graphics.FromImage(list[index]);
-                graphics.DrawImage( image, new Rectangle(0,0,image.Width,image.Height), new Rectangle(i*image.Width, j*image.Height,image.Width,image.Height), GraphicsUnit.Pixel);
+            for( int j = 0; j < partCounts; j++)
+            {
+                var bitmap = new Bitmap(image.Width, image.Height / partCounts);
+                
+                var graphics = Graphics.FromImage(bitmap);
+                graphics.DrawImage( image, new Rectangle(0,0,image.Width,image.Height / partCounts), new Rectangle(i, j*(image.Height / partCounts),image.Width,(image.Height / partCounts)), GraphicsUnit.Pixel);
                 graphics.Dispose();
+                list.Add(bitmap);
             }
         }
-
+        
         return list;
     }
     
