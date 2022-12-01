@@ -10,9 +10,10 @@ public class WatchdogService : IWatchdogService
 {
     private bool isRunning;
     private readonly IHubContext<ImageHub> hub;
-    const string ConnectionString = "Endpoint=sb://pixelit.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=2eJm7AvDsYDiXkEE3V8ADeZhnGJ41FRJCn2A4eG0nlM=";
-    public WatchdogService(IHubContext<ImageHub> hub)
+    private readonly string connectionString;
+    public WatchdogService(IHubContext<ImageHub> hub, IConfiguration configuration)
     {
+        this.connectionString = configuration.GetConnectionString("OutQueueClient"); 
         this.isRunning = false;
         this.hub = hub;
     }
@@ -33,7 +34,7 @@ public class WatchdogService : IWatchdogService
     {
         try
         {
-            await using var outQueueClient = new ServiceBusClient(ConnectionString);
+            await using var outQueueClient = new ServiceBusClient(this.connectionString);
 
             ServiceBusReceiver receiver = outQueueClient.CreateReceiver("pixelitout");
             Console.WriteLine($"[Listener started|{DateTime.Now}]");

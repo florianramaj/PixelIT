@@ -1,15 +1,19 @@
 ﻿using System.Text.Json;
 using Azure.Messaging.ServiceBus;
+using Microsoft.Extensions.Configuration;
 using PixelIt.Contracts;
 using PixelItService;
 
-const string ConnectionString = "Endpoint=sb://pixelit.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=2eJm7AvDsYDiXkEE3V8ADeZhnGJ41FRJCn2A4eG0nlM=";
+var builder = new ConfigurationBuilder()
+    .AddJsonFile($"appsettings.json", true, true);
+
+var config = builder.Build();
+
 const int CellSize = 16;
 
 var pixelCalculator = new PixelCalulcator(CellSize);
 
-await using var inQueueClient = new ServiceBusClient(ConnectionString);
-await using var outQueueClient = new ServiceBusClient(ConnectionString);
+await using var inQueueClient = new ServiceBusClient(config.GetConnectionString("InQueueClient"));
 
 ServiceBusReceiver receiver = inQueueClient.CreateReceiver("pixelitin");
 var sender = inQueueClient.CreateSender("pixelitout");

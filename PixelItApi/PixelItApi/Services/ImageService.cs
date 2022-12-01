@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Configuration;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Text.Json;
 using Azure.Messaging.ServiceBus;
@@ -10,19 +11,19 @@ namespace PixelItApi.Services;
 public class ImageService : IImageService
 {
     private readonly IDatabaseService databaseService;
-    private const string ConnectionString = "Endpoint=sb://pixelit.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=2eJm7AvDsYDiXkEE3V8ADeZhnGJ41FRJCn2A4eG0nlM=";
+    private string connectionString;
     private const int imageParts = 4;
-    public ImageService(IDatabaseService databaseService)
+    public ImageService(IDatabaseService databaseService, IConfiguration configuration)
     {
         this.databaseService = databaseService;
-        
+        this.connectionString = configuration.GetConnectionString("InQueueClient");
     }
 
     public async Task WriteToPixelateImageQueue(Image image)
     {
         try
         {
-            await using var inQueueClient = new ServiceBusClient(ConnectionString);
+            await using var inQueueClient = new ServiceBusClient(this.connectionString);
             var sender = inQueueClient.CreateSender("pixelitin");
             var parts = new List<string>();
 
@@ -79,12 +80,6 @@ public class ImageService : IImageService
         return this.databaseService.GetImages();
     }
 
-    private static IEnumerable<string> Split(string str, int chunkSize)
-    {
-        return Enumerable.Range(0, str.Length / chunkSize)
-            .Select(i => str.Substring(i * chunkSize, chunkSize));
-    }
-
     private System.Drawing.Image CreateImage(byte[] imageData)
     {
         System.Drawing.Image image;
@@ -115,12 +110,5 @@ public class ImageService : IImageService
         }
         
         return list;
-    }
-    
-    private static System.Drawing.Image cropImage(System.Drawing.Image img, Rectangle cropArea)
-    {
-        Bitmap bmpImage = new Bitmap(img);
-        Bitmap bmpCrop = bmpImage.Clone(cropArea, System.Drawing.Imaging.PixelFormat.DontCare);
-        return bmpCrop;
     }
 }

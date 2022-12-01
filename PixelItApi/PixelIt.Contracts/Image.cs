@@ -6,7 +6,9 @@ namespace PixelIt.Contracts
     {
         [JsonProperty("id")]
         public Guid Id { get; set; }
+        
         public Guid ImageId { get; set; }
+        
         public string Name { get; set; }
         public string StringBytes { get; set; }
     }

@@ -9,10 +9,10 @@ namespace PixelItApi.Services
         private readonly CosmosClient client;
         private readonly Container container;
 
-        public CosmosService()
+        public CosmosService(IConfiguration configuration)
         {
             client = new CosmosClient(
-                connectionString: "AccountEndpoint=https://pixelitcosmosdb.documents.azure.com:443/;AccountKey=0GdHNgIHY1Z5iJR1hFXyHaRfj0VnCgMnznNw58eyhsSGWrNcT2q47LTPACdYmABsFuBjDZs7xCOwACDbTd4rAw==;"
+                connectionString: configuration.GetConnectionString("CosmosClient")
             );
             
             this.container = this.client.GetDatabase("PixelIt").GetContainer("Image");
