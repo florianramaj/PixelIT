@@ -1,0 +1,1 @@
+dotnet PixelItService.dll %*

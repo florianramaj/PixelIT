@@ -10,6 +10,12 @@ MIT
 @angular/router
 MIT
 
+@microsoft/signalr
+MIT
+
+guid-typescript
+ISC
+
 rxjs
 Apache-2.0
                                Apache License

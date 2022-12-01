@@ -9,8 +9,49 @@
         <button type="button" (click)="pixelit()" class="btn btn-primary">Pixel It!</button>
     </div>
 </div>
+<div class="row" style="margin-top: 10px;">
+    <div class="col">
+        <div class="progress"> <!--TODO mach es grün wenn fertig-->
+            <div id="progressDiv" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+</div>
 <div class="row">
-    <img test style="width: 100px" [src]="fileUpload" />
+
+</div>
+<div class="row">
+    <div class="col">
+        Original
+        <div class="row">
+            <img style="width: 500px" [src]="fileUpload" />
+        </div>
+
+    </div>
+    <div class="col">
+        Verpixelt <!--TODO-->
+        <div class="row">
+            <img style="width: 500px" [src]="this.signalRService.pixeldImage[0]" />
+        </div> 
+        <div class="row"> <img style="width: 500px" [src]="this.signalRService.pixeldImage[1]" /></div>
+        <div class="row"> <img style="width: 500px" [src]="this.signalRService.pixeldImage[2]" /></div>
+        <div class="row"><img style="width: 500px" [src]="this.signalRService.pixeldImage[3]" /></div>
+    </div>
+
 </div>
 
+<hr>
+<h2>
+    History
+</h2>
+<button type="button" (click)="getImages()" class="btn btn-primary">Get History</button>
+<div class="row" *ngFor="let image of localImages">
+    <div class="col">
+        {{image.name}}
+    </div>
+    <div class="col">
+        <img style="width: 500px" [src]="image.stringBytes" />
 
+    </div>
+    
+</div>

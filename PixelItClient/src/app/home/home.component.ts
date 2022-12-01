@@ -5,6 +5,8 @@ import { Buffer } from 'buffer';
 import { SignalrService } from '../services/signalr.service';
 import { HttpHandlerService } from '../services/http-handler.service';
 import { Guid } from 'guid-typescript';
+import { merge, Observable, startWith, Subject, switchMap, tap } from 'rxjs';
+import { Image } from '../models/Image';
 
 
 
@@ -17,11 +19,16 @@ export class HomeComponent implements OnInit {
 
   fileUpload: string = "";
   base4File: string = "";
-  imageName: string ="";
+  public reloadSubject: Subject<void> = new Subject();
+  public images!: Observable<Image[]>;
+  public localImages: Image[] = [];
+
+
 
   constructor(public signalRService: SignalrService, private http: HttpClient, private httpService: HttpHandlerService) { }
 
   ngOnInit(): void {
+
     this.signalRService.startConnection();
     this.signalRService.addTransferChartDataListener();   
     this.startHttpRequest();
@@ -45,11 +52,6 @@ export class HomeComponent implements OnInit {
 
     var file = target.files[0] as File;
 
-    var image = new Image();
-   // this.fileUpload = 'data:image/png;base64,eyJUYWciOm51bGwsIlBoeXNpY2FsRGltZW5zaW9uIjp7IklzRW1wdHkiOmZhbHNlLCJXaWR0aCI6NDE3LCJIZWlnaHQiOjYxNX0sIlNpemUiOnsiSXNFbXB0eSI6ZmFsc2UsIldpZHRoIjo0MTcsIkhlaWdodCI6NjE1fSwiV2lkdGgiOjQxNywiSGVpZ2h0Ijo2MTUsIkhvcml6b250YWxSZXNvbHV0aW9uIjo5NS45ODY1OTUsIlZlcnRpY2FsUmVzb2x1dGlvbiI6OTUuOTg2NTk1LCJGbGFncyI6Nzc4NDIsIlJhd0Zvcm1hdCI6eyJHdWlkIjoiYjk2YjNjYWYtMDcyOC0xMWQzLTlkN2ItMDAwMGY4MWVmMzJlIn0sIlBpeGVsRm9ybWF0IjoyNDk4NTcwLCJQcm9wZXJ0eUlkTGlzdCI6Wzc3MSw3NjksMjA3NTIsMjA3NTMsMjA3NTRdLCJQcm9wZXJ0eUl0ZW1zIjpbeyJJZCI6NzcxLCJMZW4iOjEsIlR5cGUiOjEsIlZhbHVlIjoiQUE9PSJ9LHsiSWQiOjc2OSwiTGVuIjo4LCJUeXBlIjo1LCJWYWx1ZSI6Im9JWUJBSSt4QUFBPSJ9LHsiSWQiOjIwNzUyLCJMZW4iOjEsIlR5cGUiOjEsIlZhbHVlIjoiQVE9PSJ9LHsiSWQiOjIwNzUzLCJMZW4iOjQsIlR5cGUiOjQsIlZhbHVlIjoid3c0QUFBPT0ifSx7IklkIjoyMDc1NCwiTGVuIjo0LCJUeXBlIjo0LCJWYWx1ZSI6Ind3NEFBQT09In1dLCJQYWxldHRlIjp7IkZsYWdzIjowLCJFbnRyaWVzIjpbXX0sIkZyYW1lRGltZW5zaW9uc0xpc3QiOlsiNzQ2MmRjODYtNjE4MC00YzdlLThlM2YtZWU3MzMzYTdhNDgzIl19';
-    document.body.appendChild(image);
-
-
     if(file.type != "image/png"){
       alert("There are just the formats png or jpg allowed!");
       return;
@@ -57,7 +59,7 @@ export class HomeComponent implements OnInit {
     console.log(file);
     var reader = new FileReader();
     reader.readAsDataURL(file);
-    this.imageName = file.name;
+    this.signalRService.imageName = file.name;
 
     reader.onload = (x) => {
       this.fileUpload = <string>x.target?.result;
@@ -72,8 +74,32 @@ export class HomeComponent implements OnInit {
   }
 
   pixelit(){
+    this.signalRService.pixeldImage = [];
     var id = Guid.create().toString();
-    this.httpService.PixelIt({id: id, name: this.imageName, stringBytes: this.base4File}).subscribe(x => console.log(x));
+    this.signalRService.pixelId = id;
+    this.signalRService.progressbar = 5;
+    var test = document.getElementById("progressDiv");
+    test?.style.setProperty("width", this.signalRService.progressbar+"%");
+    this.httpService.PixelIt({id: id, name: this.signalRService.imageName, stringBytes: this.base4File, imageId: Guid.EMPTY}).subscribe(x => console.log(x));
+  }
+
+  getImages(){
+    this.images = merge(this.reloadSubject).pipe(
+      startWith({}),
+      switchMap(() => {
+        return this.httpService.GetImages()
+      }),
+      tap(a => {
+        a.every(x => x.stringBytes = "data:image/png;base64," + x.stringBytes);
+
+        this.localImages = a;
+
+
+      }),
+    );
+
+    this.images.subscribe();
+    
   }
 
 
