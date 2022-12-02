@@ -14,16 +14,17 @@ export class SignalrService {
 
   }
 
-  pixeldImage: string[] = [];
-  pixelId: string = "";
-  imageName: string ="";
-  progressbar = 0;
+  public pixeldImage: string[] = [];
+  public pixeldImageHelp: ImagePart[] = [];
+  public pixelId: string = "";
+  public imageName: string = "";
+  public progressbar = 0;
 
 
   private hubConnection!: signalR.HubConnection;
   public startConnection = () => {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://webapppixelitwatchdogapi.azurewebsites.net/image', {
+      .withUrl('https://pixelitwatchdogapi.azurewebsites.net/image', {
         skipNegotiation: true,
         transport: signalR.HttpTransportType.WebSockets
       })
@@ -37,25 +38,51 @@ export class SignalrService {
   public addTransferChartDataListener = () => {
     this.hubConnection.on('ImageData', (data: ImagePart) => {
       console.log(data);
-      this.httpService.SaveImage({id: data.identificator, name: this.imageName, stringBytes: data.stringBytes, imageId: data.imageId}).subscribe();
+      this.httpService.SaveImage({id: data.identificator, name: new Date().toISOString(), stringBytes: data.stringBytes, imageId: data.imageId}).subscribe( x => console.log(x));
 
       if (data.imageId != this.pixelId)
         return;
 
-      var test = document.getElementById("progressDiv");
+      var progressElem = document.getElementById("progressDiv");
       
       var procent = (data.partNumber / (data.totalPart+1)) * 100;
 
       for (let progressbar = 0; progressbar <= procent; progressbar++) {
-        test?.style.setProperty("width", progressbar+"%");
+        if(progressbar == 100)
+        {
+          progressElem!.style.backgroundColor = "green";
+        }
+
+        progressElem?.style.setProperty("width", progressbar+"%");
         
       }
 
       
-      //TODO: REIHENFOLGE BEACHTEN DU HEISL; zwischenlist 
-      this.pixeldImage.push("data:image/png;base64," + data.stringBytes);
+    
+      this.pixeldImageHelp.push(data);
+
+
+      this.checkOrder(data);
     });
 
-    console.log("HEI");
+
+  }
+
+  checkOrder(data: ImagePart)
+  {
+
+    if(data.totalPart + 1 == this.pixeldImageHelp.length)
+    {
+      // 
+      for (let index = 0; index < this.pixeldImageHelp.length; index++) {
+        var filtered = this.pixeldImageHelp.find(x => x.partNumber-1 == index);
+
+        if(filtered == undefined)
+        {console.warn("Failed");}
+
+        this.pixeldImage.push("data:image/png;base64," + filtered?.stringBytes);
+        
+      }
+    }
   }
 }

@@ -1,0 +1,12 @@
+C:\Users\ramaj\Schule\Master\3Semester\CloudComputing\PixelIT\PixelItApi\PixelIt.Contracts\bin\Debug\net6.0\PixelIt.Contracts.deps.json
+C:\Users\ramaj\Schule\Master\3Semester\CloudComputing\PixelIT\PixelItApi\PixelIt.Contracts\bin\Debug\net6.0\PixelIt.Contracts.dll
+C:\Users\ramaj\Schule\Master\3Semester\CloudComputing\PixelIT\PixelItApi\PixelIt.Contracts\bin\Debug\net6.0\PixelIt.Contracts.pdb
+C:\Users\ramaj\Schule\Master\3Semester\CloudComputing\PixelIT\PixelItApi\PixelIt.Contracts\obj\Debug\net6.0\PixelIt.Contracts.csproj.AssemblyReference.cache
+C:\Users\ramaj\Schule\Master\3Semester\CloudComputing\PixelIT\PixelItApi\PixelIt.Contracts\obj\Debug\net6.0\PixelIt.Contracts.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ramaj\Schule\Master\3Semester\CloudComputing\PixelIT\PixelItApi\PixelIt.Contracts\obj\Debug\net6.0\PixelIt.Contracts.AssemblyInfoInputs.cache
+C:\Users\ramaj\Schule\Master\3Semester\CloudComputing\PixelIT\PixelItApi\PixelIt.Contracts\obj\Debug\net6.0\PixelIt.Contracts.AssemblyInfo.cs
+C:\Users\ramaj\Schule\Master\3Semester\CloudComputing\PixelIT\PixelItApi\PixelIt.Contracts\obj\Debug\net6.0\PixelIt.Contracts.csproj.CoreCompileInputs.cache
+C:\Users\ramaj\Schule\Master\3Semester\CloudComputing\PixelIT\PixelItApi\PixelIt.Contracts\obj\Debug\net6.0\PixelIt.Contracts.dll
+C:\Users\ramaj\Schule\Master\3Semester\CloudComputing\PixelIT\PixelItApi\PixelIt.Contracts\obj\Debug\net6.0\refint\PixelIt.Contracts.dll
+C:\Users\ramaj\Schule\Master\3Semester\CloudComputing\PixelIT\PixelItApi\PixelIt.Contracts\obj\Debug\net6.0\PixelIt.Contracts.pdb
+C:\Users\ramaj\Schule\Master\3Semester\CloudComputing\PixelIT\PixelItApi\PixelIt.Contracts\obj\Debug\net6.0\ref\PixelIt.Contracts.dll

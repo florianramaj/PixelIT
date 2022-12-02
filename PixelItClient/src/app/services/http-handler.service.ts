@@ -9,13 +9,10 @@ export class HttpHandlerService {
 
   constructor(private http: HttpClient) { }
 
-  private endPoint = "https://webapppixelitapi.azurewebsites.net";
+  private endPoint = "https://pixelitapi.azurewebsites.net";
 
   private headers: HttpHeaders = new HttpHeaders().set("Content-Type", "application/json;");
 
-/*  public AddPic(image: Image){
-    return this.http.post<any>
-  }*/
 
   public PixelIt(image: Image)
   {
@@ -24,6 +21,7 @@ export class HttpHandlerService {
 
   public SaveImage(image: Image)
   {
+    console.log(image);
     return this.http.post<any>(this.endPoint + "/Image", image, {headers: this.headers});
   }
 

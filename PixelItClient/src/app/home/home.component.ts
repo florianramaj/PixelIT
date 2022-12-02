@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
   public reloadSubject: Subject<void> = new Subject();
   public images!: Observable<Image[]>;
   public localImages: Image[] = [];
+  public isAllowed = false;
 
 
 
@@ -35,7 +36,7 @@ export class HomeComponent implements OnInit {
   }
 
   private _startHttpRequest = () => {
-    this.http.get('https://webapppixelitwatchdogapi.azurewebsites.net/api/image')
+    this.http.get('https://pixelitwatchdogapi.azurewebsites.net/api/image')
       .subscribe(res => {
         console.log(res);
       });
@@ -49,17 +50,18 @@ export class HomeComponent implements OnInit {
 
   handleFileInput(target: any){
 
-
+    this.isAllowed = false;
     var file = target.files[0] as File;
 
     if(file.type != "image/png"){
-      alert("There are just the formats png or jpg allowed!");
+      alert("There is just the format png allowed!");
       return;
     }
+    this.isAllowed = true;
     console.log(file);
     var reader = new FileReader();
     reader.readAsDataURL(file);
-    this.signalRService.imageName = file.name;
+    this.signalRService.imageName = file.name.toString();
 
     reader.onload = (x) => {
       this.fileUpload = <string>x.target?.result;
@@ -75,11 +77,13 @@ export class HomeComponent implements OnInit {
 
   pixelit(){
     this.signalRService.pixeldImage = [];
+    this.signalRService.pixeldImageHelp = [];
     var id = Guid.create().toString();
     this.signalRService.pixelId = id;
     this.signalRService.progressbar = 5;
-    var test = document.getElementById("progressDiv");
-    test?.style.setProperty("width", this.signalRService.progressbar+"%");
+    var progressElem = <HTMLInputElement>document.getElementById("progressDiv");
+    progressElem?.style.setProperty("width", this.signalRService.progressbar+"%");
+    progressElem!.style.backgroundColor = "#0d6efd";
     this.httpService.PixelIt({id: id, name: this.signalRService.imageName, stringBytes: this.base4File, imageId: Guid.EMPTY}).subscribe(x => console.log(x));
   }
 
